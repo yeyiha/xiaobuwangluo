@@ -1,53 +1,68 @@
 package com.yyh.main;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * 按照个人理解，题目中说inputItems已经根据itemId排好序，因此只需要遍历inputItems中的每个FeeItem对象，
- *依次判断符不符合条件而选择是否加进结果集或这其他集中，如果遍历完成后结果集中数量小于10，再从其他集中选取元素添加到结果集中即可
+ *如果该对象尚未加入结果集并且符合条件，则将该对象加入结果集并标记该feedItem已加入结果集,然后从头遍历inputItems
+ * 如果不符合，则遍历判断下一个
+ * 时间复杂度为O(n*n),空间复杂度为o（n)
+ * 因题目没有样例，不知题意是否理解正确
  */
 public class Main {
     public List<FeedItem> reorderFeedItems(List<FeedItem> inputItems){
-        List<FeedItem>res=new ArrayList<>();
+        boolean[] visited =new boolean[inputItems.size()];
         FeedItem []resArray=new FeedItem[10];//结果集
-        List<FeedItem>otherArray=new ArrayList<>();//其他集
         int index=0;
-        for(FeedItem feedItem:inputItems){
+        int size=inputItems.size();
+        for(int i=0;i<size;){
+            if(visited[i]){
+                i++;
+                continue;
+            }
+            FeedItem feedItem=inputItems.get(i);
             if(index>0){//防止数组越界
                 if(resArray[index-1].getAuthor().equals(feedItem.getAuthor())){// 相同author的FeedItem不能相邻
-                    otherArray.add(feedItem);
 
+                    i++;//判断下一个
                 }
                 else if(index-2<0){//结果集中只有一个值
                     resArray[index]=feedItem;
                     index++;
+                    visited[i]=true;//标记
+                    i=0;//从头遍历
                 }
                 else if(!(resArray[index-2].getCategory().equals(feedItem.getCategory())&&
                             resArray[index-1].getCategory().equals(feedItem.getCategory()))){//相同category的FeedItem最多连续显示2条
                     resArray[index]=feedItem;
                     index++;
+                    visited[i]=true;//标记
+                    i=0;//从头遍历
                 }
                 else{
-                    otherArray.add(feedItem);
+                    i++;
 
                 }
             }
             else {//第一个元素
                 resArray[index]=feedItem;
                 index++;
+                visited[i]=true;//标记，从头遍历
+                i=0;
             }
             if(index==10){//取得10个则重排完成
                 return Arrays.asList(resArray);
             }
 
         }
-        //没有取够十个，追加靠前FeedItem 来补足1 0 条
-        for(FeedItem feedItem:otherArray){
-            resArray[index++]=feedItem;
-            if(index==10){
-                break;
+        //没有取够十个，追加靠前FeedItem来补足10条
+        for(int i=0;i<size;i++){
+            if(!visited[i]){
+                resArray[index++]=inputItems.get(i);
+                if(index==10)
+                    break;
             }
         }
         return Arrays.asList(resArray);
