@@ -8,7 +8,7 @@ import java.util.List;
  * 按照个人理解，题目中说inputItems已经根据itemId排好序，因此只需要遍历inputItems中的每个FeeItem对象，
  *如果该对象尚未加入结果集并且符合条件，则将该对象加入结果集并标记该feedItem已加入结果集,然后从头遍历inputItems
  * 如果不符合，则遍历判断下一个
- * 时间复杂度为O(n*n),空间复杂度为o（n)
+ * 时间复杂度为O(n*n),空间复杂度为O（n)
  * 因题目没有样例，不知题意是否理解正确
  */
 public class Main {
