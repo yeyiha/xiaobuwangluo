@@ -10,6 +10,7 @@ import java.util.List;
  * 如果不符合，则遍历判断下一个
  * 时间复杂度为O(n*n),空间复杂度为O（n)
  * 因题目没有样例，不知题意是否理解正确
+ * 这里使用的是暴力枚举法，另一个思路是把所有对象根据author分组，然后再在每一个小组里选取，不过这里可能得到结果集中id不是有序，不清楚是否符合题意
  */
 public class Main {
     public List<FeedItem> reorderFeedItems(List<FeedItem> inputItems){
